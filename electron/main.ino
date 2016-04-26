@@ -101,9 +101,10 @@ void loop() {
     }
 
 #if DEBUG_MODE
-    delay(5 * 1000);
+    delay(5000);
 #else
-    delay(60 * 1000); // TODO: Go to sleep mode
+    delay(1000); // Wait for data to be sent. TODO: Make this nicer than a delay.
+    System.sleep(SLEEP_MODE_DEEP, 3600); // Sleep for 1h
 #endif
 }
 
