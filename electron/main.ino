@@ -58,6 +58,15 @@ void loop() {
     }
 
     if (Wire.available()) {
+        // Get battery stats
+        FuelGauge fuel;
+        float batteryVoltage = fuel.getVCell(); // Actual voltage
+        float batteryChargeLevel = fuel.getSoC(); // Percentage, 0-100
+
+#if DEBUG_MODE
+        Serial.println("Battery voltage: " + String(batteryVoltage) + ", SoC: " + String(batteryChargeLevel));
+#endif
+
         // Read temperature (16 bit, high then low bits)
         uint8_t temp[2];
         temp[0] = Wire.read(); // hi
@@ -93,7 +102,8 @@ void loop() {
             Serial.print(mcelsius);
             Serial.print('\n');
 #else
-            String data = String::format("t1=%d", mcelsius);
+            String data = String::format("t1=%d,v=%.3f,c=%.1f",
+                    mcelsius, batteryVoltage, batteryChargeLevel);
             Particle.publish("measurement", data, 300, PRIVATE);
 #endif
         }
@@ -104,7 +114,7 @@ void loop() {
     delay(5000);
 #else
     delay(1000); // Wait for data to be sent. TODO: Make this nicer than a delay.
-    System.sleep(SLEEP_MODE_DEEP, 3600); // Sleep for 1h
+    System.sleep(SLEEP_MODE_DEEP, 60); // Sleep for 1h
 #endif
 }
 
