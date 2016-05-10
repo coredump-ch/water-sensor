@@ -24,10 +24,16 @@ The events are logged as events to the particle cloud with the event name `measu
 The data contains the measurements as comma separated `key=value` pairs. The
 temperature values are returned as decimal milli-degrees celsius.
 
+Keys:
+
+- `t1`: Main temperature sensor
+- `v`: Battery voltage
+- `c`: Battery capacity (percent)
+
 Here's an example event:
 
     {
-        "data":"t1=24997",
+        "data":"t1=24997,v=3.945,c=85.3",
         "ttl":"300",
         "published_at":"2016-04-26T20:55:26.915Z",
         "coreid":"4a005b001451343334363036",
