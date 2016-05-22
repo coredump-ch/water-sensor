@@ -69,4 +69,4 @@ async function main() {
     es.addEventListener('measurement', processMeasurement);
 }
 
-main();
+main().then(() => console.info('Waiting for events...'));
