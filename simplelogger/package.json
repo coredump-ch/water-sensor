@@ -1,0 +1,21 @@
+{
+  "name": "sse-simplelogger",
+  "version": "0.1.0",
+  "description": "Log SSE events.",
+  "main": "logger.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "eventsource": "^0.2.1",
+    "json-promise": "^1.1.8",
+    "request-promise": "^3.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^1.8.10"
+  }
+}
