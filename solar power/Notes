@@ -1,0 +1,10 @@
+
+(From Danilo via Telegram): we lose about 0.21% from the battery per measurement with the 2G Electron.
+
+The battery holds a charge of about 2000mAh.  So each measurement consumes about 15.5 mWh of energy (3.7V * 2000mAh * 0.0021).
+
+The smallest solar panel I have, which fits nicely in the top of the jar, provides ~10 mW in overcast conditions.
+
+So we can very roughly guess the panel could recharge one measurement's worth of energy in something like 1.5 hours in overcast conditions.
+
+Haven't managed to get good characterization of the panel in the jar in sunny conditions, but the above suggests we should be ok to do 4-6 measurements per day.  Even with no sunny days, ~8 hours of overcast might be enough to recover all the spent energy.
