@@ -39,3 +39,28 @@ Here's an example event:
         "coreid":"4a005b001451343334363036",
         "name":"measurement"
     }
+
+## Message format (LoRaWAN)
+
+LoRaWAN uses a binary message format. Payload bytes correspond to the following
+C struct (bytes in network byte order):
+
+```c
+struct {
+    uint32_t millicelsius; // Integer like 23420
+    float batteryVoltage; // Float like 3.945454
+    float batteryCharge; // Charge percentage like 85.38253
+} payload;
+```
+
+In Python, messages can be parsed using the `!iff` format specifier:
+
+```python
+import struct
+struct.unpack(̈́'!iff', payload)
+```
+
+TO DISCUSS:
+
+- Do we want a binary format, or stick with ascii strings?
+- If we want a binary format, how do we keep it upgradeable?
