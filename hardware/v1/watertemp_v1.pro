@@ -1,4 +1,4 @@
-update=Die 10 Jan 2017 21:42:28 CET
+update=Die 10 Jan 2017 22:32:17 CET
 version=1
 last_client=kicad
 [pcbnew]
@@ -58,6 +58,4 @@ LibName26=opto
 LibName27=atmel
 LibName28=contrib
 LibName29=valves
-LibName30=mbed/mbed
-LibName31=rn2483
-LibName32=mbed/lpc1768
+LibName30=mbed/lpc1768
