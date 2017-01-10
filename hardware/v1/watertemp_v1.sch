@@ -1,1 +1,266 @@
 EESchema Schematic File Version 2
+LIBS:power
+LIBS:device
+LIBS:transistors
+LIBS:conn
+LIBS:linear
+LIBS:regul
+LIBS:74xx
+LIBS:cmos4000
+LIBS:adc-dac
+LIBS:memory
+LIBS:xilinx
+LIBS:microcontrollers
+LIBS:dsp
+LIBS:microchip
+LIBS:analog_switches
+LIBS:motorola
+LIBS:texas
+LIBS:intel
+LIBS:audio
+LIBS:interface
+LIBS:digital-audio
+LIBS:philips
+LIBS:display
+LIBS:cypress
+LIBS:siliconi
+LIBS:opto
+LIBS:atmel
+LIBS:contrib
+LIBS:valves
+LIBS:mbed
+LIBS:rn2483
+LIBS:lpc1768
+LIBS:watertemp_v1-cache
+EELAYER 25 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L CONN_01X04 P?
+U 1 1 58753F8F
+P 7200 2500
+F 0 "P?" H 7200 2750 50  0000 C CNN
+F 1 "CONN_01X04" V 7300 2500 50  0000 C CNN
+F 2 "" H 7200 2500 50  0000 C CNN
+F 3 "" H 7200 2500 50  0000 C CNN
+	1    7200 2500
+	1    0    0    -1  
+$EndComp
+$Comp
+L CONN_01X07 P?
+U 1 1 5875417D
+P 7250 3900
+F 0 "P?" H 7250 4300 50  0000 C CNN
+F 1 "CONN_01X07" V 7350 3900 50  0000 C CNN
+F 2 "" H 7250 3900 50  0000 C CNN
+F 3 "" H 7250 3900 50  0000 C CNN
+	1    7250 3900
+	1    0    0    -1  
+$EndComp
+$Comp
+L +3V3 #PWR?
+U 1 1 5875429A
+P 6900 2250
+F 0 "#PWR?" H 6900 2100 50  0001 C CNN
+F 1 "+3V3" H 6900 2390 50  0000 C CNN
+F 2 "" H 6900 2250 50  0000 C CNN
+F 3 "" H 6900 2250 50  0000 C CNN
+	1    6900 2250
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR?
+U 1 1 587542B6
+P 4025 1150
+F 0 "#PWR?" H 4025 900 50  0001 C CNN
+F 1 "GND" H 4025 1000 50  0000 C CNN
+F 2 "" H 4025 1150 50  0000 C CNN
+F 3 "" H 4025 1150 50  0000 C CNN
+	1    4025 1150
+	-1   0    0    1   
+$EndComp
+$Comp
+L GND #PWR?
+U 1 1 5875436A
+P 6900 2750
+F 0 "#PWR?" H 6900 2500 50  0001 C CNN
+F 1 "GND" H 6900 2600 50  0000 C CNN
+F 2 "" H 6900 2750 50  0000 C CNN
+F 3 "" H 6900 2750 50  0000 C CNN
+	1    6900 2750
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR?
+U 1 1 58754386
+P 6750 3900
+F 0 "#PWR?" H 6750 3650 50  0001 C CNN
+F 1 "GND" H 6750 3750 50  0000 C CNN
+F 2 "" H 6750 3900 50  0000 C CNN
+F 3 "" H 6750 3900 50  0000 C CNN
+	1    6750 3900
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR?
+U 1 1 587543A2
+P 6750 3700
+F 0 "#PWR?" H 6750 3450 50  0001 C CNN
+F 1 "GND" H 6750 3550 50  0000 C CNN
+F 2 "" H 6750 3700 50  0000 C CNN
+F 3 "" H 6750 3700 50  0000 C CNN
+	1    6750 3700
+	1    0    0    -1  
+$EndComp
+Text Label 6600 2450 0    60   ~ 0
+SDA
+Text Label 6600 2550 0    60   ~ 0
+SCL
+$Comp
+L +5V #PWR?
+U 1 1 58754613
+P 6750 3500
+F 0 "#PWR?" H 6750 3350 50  0001 C CNN
+F 1 "+5V" H 6750 3640 50  0000 C CNN
+F 2 "" H 6750 3500 50  0000 C CNN
+F 3 "" H 6750 3500 50  0000 C CNN
+	1    6750 3500
+	1    0    0    -1  
+$EndComp
+$Comp
+L +5V #PWR?
+U 1 1 58754657
+P 3875 1350
+F 0 "#PWR?" H 3875 1200 50  0001 C CNN
+F 1 "+5V" H 3875 1490 50  0000 C CNN
+F 2 "" H 3875 1350 50  0000 C CNN
+F 3 "" H 3875 1350 50  0000 C CNN
+	1    3875 1350
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR?
+U 1 1 5875470E
+P 6750 4100
+F 0 "#PWR?" H 6750 3850 50  0001 C CNN
+F 1 "GND" H 6750 3950 50  0000 C CNN
+F 2 "" H 6750 4100 50  0000 C CNN
+F 3 "" H 6750 4100 50  0000 C CNN
+	1    6750 4100
+	1    0    0    -1  
+$EndComp
+$Comp
+L mbed_NXP_LPC1768 MBED_SB_?
+U 1 1 58755815
+P 4725 2200
+F 0 "MBED_SB_?" H 4725 3250 70  0000 C CNN
+F 1 "mbed_NXP_LPC1768" H 4725 1150 60  0000 C CNN
+F 2 "" H 5075 2200 60  0000 C CNN
+F 3 "" H 5075 2200 60  0000 C CNN
+	1    4725 2200
+	1    0    0    -1  
+$EndComp
+$Comp
+L +3V3 #PWR?
+U 1 1 58755CFA
+P 5425 1150
+F 0 "#PWR?" H 5425 1000 50  0001 C CNN
+F 1 "+3V3" H 5425 1290 50  0000 C CNN
+F 2 "" H 5425 1150 50  0000 C CNN
+F 3 "" H 5425 1150 50  0000 C CNN
+	1    5425 1150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6900 2250 6900 2350
+Wire Wire Line
+	6900 2350 7000 2350
+Wire Wire Line
+	6900 2750 6900 2650
+Wire Wire Line
+	6900 2650 7000 2650
+Wire Wire Line
+	7050 3600 6750 3600
+Wire Wire Line
+	6750 3600 6750 3500
+Wire Wire Line
+	6750 3700 7050 3700
+Wire Wire Line
+	6750 3900 7050 3900
+Wire Wire Line
+	6750 4100 7050 4100
+Wire Wire Line
+	3875 1350 4025 1350
+Wire Wire Line
+	5425 2550 7000 2550
+Wire Wire Line
+	5425 2450 7000 2450
+Wire Wire Line
+	4025 1150 4025 1250
+Wire Wire Line
+	5425 1250 5425 1150
+$Comp
+L CONN_01X08 P?
+U 1 1 58756259
+P 1700 1700
+F 0 "P?" H 1700 2150 50  0000 C CNN
+F 1 "CONN_01X08" V 1800 1700 50  0000 C CNN
+F 2 "" H 1700 1700 50  0000 C CNN
+F 3 "" H 1700 1700 50  0000 C CNN
+	1    1700 1700
+	-1   0    0    1   
+$EndComp
+$Comp
+L GND #PWR?
+U 1 1 58756539
+P 2000 2050
+F 0 "#PWR?" H 2000 1800 50  0001 C CNN
+F 1 "GND" V 2000 1850 50  0000 C CNN
+F 2 "" H 2000 2050 50  0000 C CNN
+F 3 "" H 2000 2050 50  0000 C CNN
+	1    2000 2050
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	1900 2050 2000 2050
+$Comp
+L +3V3 #PWR?
+U 1 1 58756589
+P 2000 1850
+F 0 "#PWR?" H 2000 1700 50  0001 C CNN
+F 1 "+3V3" V 2000 2075 50  0000 C CNN
+F 2 "" H 2000 1850 50  0000 C CNN
+F 3 "" H 2000 1850 50  0000 C CNN
+	1    2000 1850
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	2000 1850 1900 1850
+Text GLabel 2100 1350 2    60   Input ~ 0
+Tx
+Text GLabel 2100 1450 2    60   Input ~ 0
+Rx
+Wire Wire Line
+	2100 1350 1900 1350
+Wire Wire Line
+	1900 1450 2100 1450
+Wire Wire Line
+	3900 2450 4025 2450
+Text GLabel 3900 2450 0    60   Input ~ 0
+Rx
+Text GLabel 3900 2550 0    60   Input ~ 0
+Tx
+Wire Wire Line
+	4025 2550 3900 2550
+$EndSCHEMATC

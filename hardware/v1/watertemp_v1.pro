@@ -1,4 +1,4 @@
-update=Mit 21 Sep 2016 21:39:28 CEST
+update=Die 10 Jan 2017 21:42:28 CET
 version=1
 last_client=kicad
 [pcbnew]
@@ -23,9 +23,11 @@ ModuleOutlineThickness=0.150000000000
 [cvpcb]
 version=1
 NetIExt=net
+[general]
+version=1
 [eeschema]
 version=1
-LibDir=
+LibDir=../libs;../libs/mbed
 [eeschema/libraries]
 LibName1=power
 LibName2=device
@@ -56,5 +58,6 @@ LibName26=opto
 LibName27=atmel
 LibName28=contrib
 LibName29=valves
-[general]
-version=1
+LibName30=mbed/mbed
+LibName31=rn2483
+LibName32=mbed/lpc1768
