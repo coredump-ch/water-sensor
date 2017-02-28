@@ -60,3 +60,17 @@ uint8_t OneWire::read_byte()
     }
     return d;
 }
+
+void OneWire::search_rom(uint8_t addr[8]) {
+    reset();
+    write_byte(Command::SEARCH_ROM);
+
+    do {
+        bool id_bit = read_bit();
+        bool cmp_id_bit = read_bit();
+
+        if (id_bit && cmp_id_bit) {
+            break;
+        }
+    } while()
+}
