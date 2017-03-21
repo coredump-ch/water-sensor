@@ -1,5 +1,6 @@
 #include "mbed.h"
 #include <functional>
+#include "DS18B20.h"
 
 uint8_t SHT3X_I2C_ADDR = 0x45<<1;
 
@@ -25,6 +26,9 @@ int main() {
     I2C i2c_0(p28, p27);
     I2C i2c_1(p9, p10);
 
+    OneWire one_wire(p20);
+    DS18B20 ds18b20(one_wire);
+
     using I2CLink = std::reference_wrapper<I2C>;
 
     I2CLink i2cs[2] = {i2c_0, i2c_1};
@@ -44,6 +48,8 @@ int main() {
                 printf("i2c.write failed: %i\n", error);
             }
         }
+        // start conversion
+        ds18b20.start_measurement();
         wait(0.5);
 
         for (auto i2c : i2cs) {
@@ -62,6 +68,14 @@ int main() {
             float humi = calculate_humi(data[3], data[4]);
             printf(" Humi = %.2f\n", humi);
         }
+
+        bool timeout = ds18b20.wait_for_completion();
+        if (timeout) {
+            printf("Conversion timed out");
+        }
+
+        float temperature = ds18b20.read_temperature();
+        printf("1-Wire Temp %.2f\n", temperature);
 
         led1 = 0;
         wait(0.2);
