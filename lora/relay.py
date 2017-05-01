@@ -1,15 +1,26 @@
 # pip install paho-mqtt
-import ssl
-import json
 import base64
-import struct
-import paho.mqtt.client as mqtt
+import json
 from pprint import pprint
+import ssl
+import struct
 
-APP_ID = ''
-ACCESS_KEY = ''
-PAYLOAD_FORMAT = '<fff'
+import requests
+import paho.mqtt.client as mqtt
+
+
+# General
 DEBUG = False
+
+# TTN
+APP_ID = '???'
+ACCESS_KEY = '???'
+PAYLOAD_FORMAT = '<fff'
+
+# Watertemp API
+SENSOR_ID = ?
+API_TOKEN = '???'
+API_URL = 'https://watertemp-api.coredump.ch/api'
 
 
 CONNECT_RETURN_CODES = {
@@ -20,6 +31,25 @@ CONNECT_RETURN_CODES = {
     4: 'Connection Refused, bad user name or password',
     5: 'Connection Refused, not authorized',
 }
+
+
+def send_to_api(temperature: float):
+    """
+    Send temperature measurement to API.
+    """
+    data = {
+        'sensor_id': SENSOR_ID,
+        'temperature': temperature,
+    }
+    headers = {
+        'Authorization': 'Bearer %s' % API_TOKEN,
+    }
+    print('Sending temperature %.2f°C to API...' % temperature, end='')
+    resp = requests.post(API_URL + '/measurements', json=data, headers=headers)
+    if resp.status_code == 201:
+        print('OK')
+    else:
+        print('HTTP%d' % resp.status_code)
 
 
 def on_connect(client, userdata, flags, rc):
@@ -59,7 +89,9 @@ def on_message(client, userdata, msg):
             print('Invalid payload format: %s' % e)
             return
         msg = 'DS Temp: %.2f°C | SHT Temp: %.2f°C | SHT Humi: %.2f%%RH'
+        ds_temp = unpacked[0]
         print(msg % (unpacked[0], unpacked[1], unpacked[2]))
+        send_to_api(ds_temp)
 
 
 client = mqtt.Client()
