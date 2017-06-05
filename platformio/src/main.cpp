@@ -2,6 +2,7 @@
 #include <functional>
 #include "DS18B20.h"
 #include "RN2483.h"
+#include "EthernetPowerControl.h"
 
 // SHT configuration
 const uint8_t SHT3X_I2C_ADDR = 0x45<<1;
@@ -30,6 +31,8 @@ int send_command(I2C& i2c, uint8_t address, uint16_t command) {
 
 int main() {
     printf("Start the super awesome water temperature sensor reader\n");
+
+    PHY_PowerDown();
 
     // Initialize LEDs
     DigitalOut led1(LED1);
