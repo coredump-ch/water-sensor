@@ -5,9 +5,6 @@
 #ifndef MBED_POWERCONTROL_H 
 #define MBED_POWERCONTROL_H 
 
-//shouldn't have to include, but fixes weird problems with defines
-#include "TARGET_LPC1768/LPC17xx.h"
-
 //System Control Register
 // bit 0: Reserved
 // bit 1: Sleep on Exit
