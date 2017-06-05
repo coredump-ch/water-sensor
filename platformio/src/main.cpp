@@ -2,7 +2,9 @@
 #include <functional>
 #include "DS18B20.h"
 #include "RN2483.h"
+#include "PowerControl.h"
 #include "EthernetPowerControl.h"
+#include "SleepTimer.h"
 
 // SHT configuration
 const uint8_t SHT3X_I2C_ADDR = 0x45<<1;
@@ -14,7 +16,7 @@ const uint8_t APP_KEY[16] = { SET ME };
 const bool USE_ADR = false;
 
 // Measurement interval
-const float INTERVAL = 30.0;
+const int INTERVAL = 30000;
 
 float calculate_temp(char msb, char lsb) {
     return -45.0f + 175.0f * (msb<<8 | lsb) / 65535.0f;
@@ -32,8 +34,8 @@ int send_command(I2C& i2c, uint8_t address, uint16_t command) {
 int main() {
     printf("Start the super awesome water temperature sensor reader\n");
 
-    PHY_PowerDown();
-
+    Timer t;
+    SleepTimer sleep(t);
     // Initialize LEDs
     DigitalOut led1(LED1);
     DigitalOut led2(LED2);
@@ -56,6 +58,17 @@ int main() {
     // Set up I²C sensor
     i2c_1.frequency(20000);
 
+
+    wait(5);
+    PHY_PowerDown();
+    wait(5);
+    lora.sleep();
+    wait(5);
+    Peripheral_PowerDown(0xFFFFFFFF);
+    wait(5);
+    //Sleep();
+    DeepPowerDown();
+
     // Join the network
     bool joined = false;
     while (!joined) {
@@ -69,7 +82,7 @@ int main() {
         }
         led4 = 0;
 
-        wait(5.0);
+        sleep.wait_ms(5000);
     }
 
     // Main loop
@@ -77,7 +90,7 @@ int main() {
         printf("------\nStart measurement...\n");
 
         led1 = 1;
-        wait(0.2);
+        sleep.wait_ms(200);
 
         int error;
 
@@ -89,7 +102,7 @@ int main() {
 
         // Start conversion
         ds18b20.start_measurement();
-        wait(0.5);
+        sleep.wait_ms(500);
 
         char data[6] = {};
         error = i2c_1.read(SHT3X_I2C_ADDR, data, 6);
@@ -115,7 +128,7 @@ int main() {
         printf("1-Wire Temp %.2f\n", ds_temp);
 
         led1 = 0;
-        wait(0.2);
+        sleep.wait_ms(200);
 
         // Measurement done, send it to TTN
         led2 = 1;
@@ -126,6 +139,6 @@ int main() {
         lora.send(1, payload, 12);
         led2 = 0;
 
-        wait(INTERVAL);
+        sleep.wait_ms(INTERVAL);
     }
 }
