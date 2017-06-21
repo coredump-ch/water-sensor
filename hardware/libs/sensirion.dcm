@@ -1,8 +1,0 @@
-EESchema-DOCLIB  Version 2.0
-#
-$CMP DS18B20
-D DS18B20 One-Wire Temperature Sensor
-K ds18b20 onewire dallas temperature sensor
-$ENDCMP
-#
-#End Doc Library
