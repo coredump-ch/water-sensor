@@ -28,6 +28,32 @@ int send_command(I2C& i2c, uint8_t address, uint16_t command) {
     return i2c.write(address, cmd, sizeof(cmd));
 }
 
+Serial rn2483(p13, p14);
+
+std::string sendcmd(const char* data) {
+    printf("> %s\n", data);
+    rn2483.printf("%s\r\n", data);
+
+    std::string answer{};
+
+    // wait for max 10s
+    for (int t=0; t<100;) {
+        if (!rn2483.readable()) {
+            ++t;
+            wait(0.1);
+            continue;
+        }
+        char c = rn2483.getc();
+        if (c == '\n') {
+            break;
+        }
+        answer.push_back(c);
+    }
+
+    printf("%s\n", answer.c_str());
+    return answer;
+}
+
 int main() {
     printf("Start the super awesome water temperature sensor reader\n");
 
@@ -40,6 +66,23 @@ int main() {
     // Initialize DS18B20 sensor
     OneWire one_wire(p20);
     DS18B20 ds18b20(one_wire);
+    wait(0.1);
+    rn2483.baud(57600);
+    Serial pc(USBTX, USBRX); // tx, rx
+
+    /*
+    while(1) {
+        if(pc.readable()) {
+            rn2483.putc(pc.getc());
+        }
+        if(rn2483.readable()) {
+            pc.putc(rn2483.getc());
+        }
+    }
+    */
+
+    sendcmd("");
+    sendcmd("sys factoryRESET");
 
     // Initialize SHT sensor
     I2C i2c_0(p28, p27);
