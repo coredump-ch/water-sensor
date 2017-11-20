@@ -1,15 +1,13 @@
 #include "mbed.h"
 #include <functional>
+#include <algorithm>
 #include "DS18B20.h"
 #include "RN2483.h"
+#include "secrets.h"
 
 // SHT configuration
 const uint8_t SHT3X_I2C_ADDR = 0x45<<1;
 
-// RN2483 configuration, all arrays are in MSB byte order
-const uint8_t DEV_EUI[8] = { SET ME };
-const uint8_t APP_EUI[8] = { SET ME };
-const uint8_t APP_KEY[16] = { SET ME };
 const bool USE_ADR = false;
 
 // Measurement interval
@@ -28,100 +26,139 @@ int send_command(I2C& i2c, uint8_t address, uint16_t command) {
     return i2c.write(address, cmd, sizeof(cmd));
 }
 
+static const PinName LED_RED = P1_22;
+static const PinName LED_YELLOW = P0_17;
+static const PinName LED_GREEN = P1_16;
+
+static const PinName DS18B20_IO = P1_31;
+
+static const PinName RN2483_TX = P0_19;
+static const PinName RN2483_RX = P0_18;
+
 int main() {
-    printf("Start the super awesome water temperature sensor reader\n");
+    //printf("Start the super awesome water temperature sensor reader\n");
 
     // Initialize LEDs
-    DigitalOut led1(LED1);
-    DigitalOut led2(LED2);
-    DigitalOut led3(LED3);
-    DigitalOut led4(LED4);
+    DigitalOut led_red(LED_RED);
+    DigitalOut led_yellow(LED_YELLOW);
+    DigitalOut led_green(LED_GREEN);
+
+    //printf("LEDs initialized\n");
 
     // Initialize DS18B20 sensor
-    OneWire one_wire(p20);
+    OneWire one_wire(DS18B20_IO);
     DS18B20 ds18b20(one_wire);
+    
+    //printf("DS18B20 initialized\n");
 
     // Initialize SHT sensor
-    I2C i2c_0(p28, p27);
-    I2C i2c_1(p9, p10);
+    //I2C i2c_0(p28, p27);
+    //I2C i2c_1(p9, p10);
 
     // Initialize the RN2483 module
-    PinName tx = p13;
-    PinName rx = p14;
-    RN2483 lora(tx, rx);
+    RN2483 lora(RN2483_TX, RN2483_RX);
 
     // Set up I²C sensor
-    i2c_1.frequency(20000);
+    //i2c_1.frequency(20000);
+
+    //printf("RN2483 initialized\n");
+
+    led_red = 0;
+    led_yellow = 0;
+    led_green = 0;
+
+    //if (std::all_of(std::begin(DEV_EUI), std::end(DEV_EUI), [](uint8_t v) -> bool { return v == 0; })) {
+    
+    //printf("getHWEUI\n");
+    
+    if(false)
+    {
+        uint8_t buffer[17] = {};
+        uint8_t bytes = lora.getHWEUI(buffer, 17);
+        if (bytes) {
+            led_green = 1;
+            //printf("\nHWEUI: %s\n", buffer);
+        } else {
+            led_red = 1;
+        }
+        wait(5.0);
+        return 0;
+    }
+
+    //lora.init();
 
     // Join the network
     bool joined = false;
     while (!joined) {
-        led4 = 1;
-        printf("Joining TTN via OTAA...\n");
+        led_yellow = 1;
+        //printf("Joining TTN via OTAA...\n");
         joined = lora.initOTAA(DEV_EUI, APP_EUI, APP_KEY, USE_ADR);
         if (joined) {
-            printf("Joined TTN successfully!\n");
+            led_green = 1;
+            led_red = 0;
+            //printf("Joined TTN successfully!\n");
         } else {
-            printf("Joining TTN failed\n");
+            led_red = 1;
+            //printf("Joining TTN failed\n");
         }
-        led4 = 0;
+        led_yellow = 0;
 
         wait(5.0);
     }
 
     // Main loop
     while(1) {
-        printf("------\nStart measurement...\n");
+        //printf("------\nStart measurement...\n");
 
-        led1 = 1;
+        led_green = 1;
         wait(0.2);
 
         int error;
 
         // Start measurement with clock stretching and high repeatability
-        error = send_command(i2c_1, SHT3X_I2C_ADDR, 0x2C06);
-        if (error) {
-            printf("i2c.write failed: %i\n", error);
-        }
+        //error = send_command(i2c_1, SHT3X_I2C_ADDR, 0x2C06);
+        //if (error) {
+        //    printf("i2c.write failed: %i\n", error);
+        //}
 
         // Start conversion
         ds18b20.start_measurement();
         wait(0.5);
 
-        char data[6] = {};
-        error = i2c_1.read(SHT3X_I2C_ADDR, data, 6);
-        if (error) {
-            printf("i2c_1.read failed: %i\n", error);
-        }
+        //char data[6] = {};
+        //error = i2c_1.read(SHT3X_I2C_ADDR, data, 6);
+        //if (error) {
+        //    printf("i2c_1.read failed: %i\n", error);
+        //}
 
-        for(int i=0; i<6; ++i) {
-            printf("%02x", data[i]);
-        }
-        float sht_temp = calculate_temp(data[0], data[1]);
-        printf(" -> Temp = %.2f", sht_temp);
+        //for(int i=0; i<6; ++i) {
+        //    printf("%02x", data[i]);
+        //}
+        //float sht_temp = calculate_temp(data[0], data[1]);
+        //printf(" -> Temp = %.2f", sht_temp);
 
-        float sht_humi = calculate_humi(data[3], data[4]);
-        printf(" Humi = %.2f\n", sht_humi);
+        //float sht_humi = calculate_humi(data[3], data[4]);
+        //printf(" Humi = %.2f\n", sht_humi);
 
         bool timeout = ds18b20.wait_for_completion();
         if (timeout) {
-            printf("Conversion timed out");
+            //printf("Conversion timed out");
         }
 
         float ds_temp = ds18b20.read_temperature();
-        printf("1-Wire Temp %.2f\n", ds_temp);
+        //printf("1-Wire Temp %.2f\n", ds_temp);
 
-        led1 = 0;
+        led_green = 0;
         wait(0.2);
 
         // Measurement done, send it to TTN
-        led2 = 1;
-        uint8_t payload[12];
+        led_yellow = 1;
+        uint8_t payload[12] = {};
         memcpy(payload, &ds_temp, 4);
-        memcpy(payload + 4, &sht_temp, 4);
-        memcpy(payload + 8, &sht_humi, 4);
+        //memcpy(payload + 4, &sht_temp, 4);
+        //memcpy(payload + 8, &sht_humi, 4);
         lora.send(1, payload, 12);
-        led2 = 0;
+        led_yellow = 0;
 
         wait(INTERVAL);
     }
